@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "352991799316",
+    "project_id": "capp-9f7bf",
+    "storage_bucket": "capp-9f7bf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352991799316:android:cb0a86b6d28ed399e45f01",
+        "android_client_info": {
+          "package_name": "com.mrlavug.cap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgndDL1AuURfrkEZ2IZV31Gtjf_DYBr34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352991799316:android:d6abc0aebbf9f82fe45f01",
+        "android_client_info": {
+          "package_name": "com.mrlavug.capp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgndDL1AuURfrkEZ2IZV31Gtjf_DYBr34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
