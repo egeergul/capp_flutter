@@ -1,23 +1,65 @@
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'dart:io';
 
-final db = FirebaseFirestore.instance;
+import 'package:capp_flutter/api/api.dart';
+import 'package:capp_flutter/screens/home_page.dart';
+import 'package:capp_flutter/services/navigation_service.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/route_manager.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class HomePageController extends GetxController {
-  void onTapImageAnalyser() {
-    // Create a new user with a first and last name
-    final user = <String, dynamic>{
-      "first": "Ada",
-      "last": "Lovelace",
-      "born": 1815
-    };
-
-    // Add a new document with a generated ID
-    db.collection("users").add(user).then((DocumentReference doc) =>
-        print('DocumentSnapshot added with ID: ${doc.id}'));
-
-    print("EGE 1");
+  void onTapImageAnalyser() async {
     // Add your code here
+    CroppedFile? cropped = await NavigationService.openSelectImageOptionModal();
+    if (cropped == null) return;
+
+    Get.dialog(
+      Scaffold(
+        body: Container(
+          width: Get.width,
+          height: Get.height,
+          color: Colors.black.withOpacity(0.2),
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ),
+    );
+
+    File? file = File(cropped.path);
+    final bytes = await file.readAsBytes();
+    final base64File = base64Encode(bytes);
+
+    String result =
+        await Api.instance.getImageAnalyses(base64Image: base64File);
+
+    Get.back();
+    Get.dialog(
+      Scaffold(
+        body: Container(
+          width: Get.width,
+          height: Get.height,
+          padding: const EdgeInsets.all(20),
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: Get.back,
+                  child: const Icon(Icons.close),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: Text(result),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   void onTapColorPaletteDetector() {
