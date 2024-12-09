@@ -85,6 +85,21 @@ class Api {
     await updateUser(user: user);
   }
 
+  Future<Chat?> getChat({
+    required String deviceId,
+    required String id,
+  }) async {
+    final DocumentSnapshot chatDoc =
+        await chatsCollection(deviceId).doc(id).get();
+    if (chatDoc.exists) {
+      LoggerHelper.logInfo("Api.getChat", "Chat ($id) found");
+      return Chat.fromJson(chatDoc.data()! as Map<String, dynamic>);
+    } else {
+      LoggerHelper.logInfo("Api.getChat", "Chat ($id) not found");
+      return null;
+    }
+  }
+
   Future<Chat> sendMessage({
     required User user,
     required Chat chat,
@@ -131,16 +146,15 @@ class Api {
     return chat;
   }
 
-  Future<String> getImageAnalyses({
-    required String base64Image,
-  }) async {
-    return "hi";
-    // Map<String, dynamic> response = await OpenaiApi.instance.sendMessage(
-    //   systemMessage: ApiConstants.analyzeImageSystemMessageV1,
-    //   userMessage: "Analyze this image",
-    //   base64Image: base64Image,
-    // );
+  Future<List<Chat>> getUserChats({required String deviceId}) async {
+    List<Chat> res = [];
+    QuerySnapshot snapshot = await chatsCollection(deviceId).get();
 
-    // return response["choices"][0]["message"]["content"];
+    if (snapshot.docs.isNotEmpty) {
+      res = snapshot.docs
+          .map((i) => Chat.fromJson(i.data() as Map<String, dynamic>))
+          .toList();
+    }
+    return res;
   }
 }

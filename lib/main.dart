@@ -43,6 +43,10 @@ class MyApp extends StatelessWidget {
             name: Routes.home,
             page: () => const HomeScreen(),
           ),
+          GetPage(
+            name: Routes.chat,
+            page: () => const ChatScreen(),
+          ),
         ],
       ),
     );

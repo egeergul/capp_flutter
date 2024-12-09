@@ -48,6 +48,10 @@ class Chat {
     required this.type,
   });
 
+  factory Chat.empty() {
+    return Chat.fromValues(id: "-1");
+  }
+
   factory Chat.fromValues({
     required String id,
     List<Message>? messages,
