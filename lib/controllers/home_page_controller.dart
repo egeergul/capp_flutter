@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:capp_flutter/api/api.dart';
+import 'package:capp_flutter/controllers/profile_page_controllers.dart';
 import 'package:capp_flutter/helpers/loading_helper.dart';
+import 'package:capp_flutter/helpers/logger_helper.dart';
 import 'package:capp_flutter/models/chat.dart';
 import 'package:capp_flutter/models/message.dart';
 import 'package:capp_flutter/models/user.dart';
 import 'package:capp_flutter/services/navigation_service.dart';
 import 'package:capp_flutter/services/user_service.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class HomePageController extends GetxController {
@@ -31,11 +33,19 @@ class HomePageController extends GetxController {
     );
 
     // Send the message but don't await for a response
-    Api.instance.sendMessage(
+    await Api.instance.sendMessage(
       user: user,
       chat: chat,
       message: message,
     );
+
+    try {
+      final pc = Get.find<ProfilePageController>();
+      pc.refresh();
+    } catch (e) {
+      LoggerHelper.logError(
+          "HomePageController.onTapImageAnalyser", e.toString());
+    }
 
     LoadingHelper.instance.closeLoadingAnimation("analyse_image");
     NavigationService.navigateToChatScreen(chatId: chat.id);

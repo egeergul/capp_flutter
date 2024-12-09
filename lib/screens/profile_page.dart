@@ -16,6 +16,7 @@ class ProfilePage extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Obx(
         () {
+          if (controller.chats.isEmpty) return const _HistoryEmptyBox();
           return ListView.builder(
             itemCount: controller.chats.length,
             itemBuilder: (context, index) {
@@ -103,6 +104,24 @@ class _HistoryItem extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _HistoryEmptyBox extends StatelessWidget {
+  const _HistoryEmptyBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("You don't have any chats yet 😟"),
+        ],
       ),
     );
   }

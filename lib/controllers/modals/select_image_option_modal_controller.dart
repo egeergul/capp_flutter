@@ -56,7 +56,8 @@ class SelectImageOptionModalController {
       } else {
         // something else went wrong
         LoggerHelper.logError(
-            "SelectImageOptionModalController.selectAndGetCroppedImage ${e.toString()}");
+            "SelectImageOptionModalController.selectAndGetCroppedImage",
+            e.toString());
       }
       return null;
     }

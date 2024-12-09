@@ -17,6 +17,13 @@ class ProfilePageController extends GetxController {
     super.onInit();
   }
 
+  void refreshChats() async {
+    var list = await Api.instance
+        .getUserChats(deviceId: UserService.instance.user.deviceId);
+    list.sort((a, b) => a.updatedAt > b.updatedAt ? -1 : 1);
+    chats.value = list;
+  }
+
   void onTap(Chat chat) {
     NavigationService.navigateToChatScreen(chatId: chat.id);
   }
@@ -30,8 +37,11 @@ class ProfilePageController extends GetxController {
       return;
     }
     chat.status = ChatStatus.deleted;
-    Api.instance
-        .updateConversation(user: UserService.instance.user, chat: chat);
+    User user = UserService.instance.user;
+    user.totalChats -= 1;
+
+    Api.instance.updateUser(user: UserService.instance.user);
+    Api.instance.updateConversation(user: user, chat: chat);
     chats.remove(chat);
     Get.back();
   }
