@@ -1,4 +1,6 @@
 import 'package:capp_flutter/constants/routes.dart';
+import 'package:capp_flutter/models/popup.dart';
+import 'package:capp_flutter/widgets/popup_box.dart';
 import 'package:capp_flutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,10 @@ import 'package:image_cropper/image_cropper.dart';
 class NavigationService {
   static void closeAllModals() {
     Get.until((route) => !(Get.isBottomSheetOpen ?? false));
+  }
+
+  static void closeAllDialogs() {
+    Get.until((route) => !(Get.isDialogOpen ?? false));
   }
 
   static navigateHome() {
@@ -41,5 +47,18 @@ class NavigationService {
       barrierColor: Colors.black.withOpacity(0.6),
       barrierDismissible: false,
     );
+  }
+
+  // 1: if confirm button pressed
+  // 0: if reject button pressed
+  // null if nothing is pressed
+  static Future<int?> openPopup({required Popup popup}) async {
+    int? res = await Get.dialog(
+      PopupBox(popup: popup),
+      barrierColor: Colors.black.withOpacity(0.6),
+      barrierDismissible: true,
+    );
+
+    return res;
   }
 }

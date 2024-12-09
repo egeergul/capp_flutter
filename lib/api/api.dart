@@ -148,6 +148,7 @@ class Api {
 
   Future<List<Chat>> getUserChats({required String deviceId}) async {
     List<Chat> res = [];
+
     QuerySnapshot snapshot = await chatsCollection(deviceId).get();
 
     if (snapshot.docs.isNotEmpty) {
@@ -155,6 +156,7 @@ class Api {
           .map((i) => Chat.fromJson(i.data() as Map<String, dynamic>))
           .toList();
     }
+    res = res.where((e) => e.status != ChatStatus.deleted).toList();
     return res;
   }
 }
