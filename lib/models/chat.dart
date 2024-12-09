@@ -92,13 +92,14 @@ class Chat {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool withoutImage = false}) {
     return {
       'id': id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'messages': {
-        for (Message message in messages) message.id: message.toJson()
+        for (Message message in messages)
+          message.id: message.toJson(withoutImage: withoutImage)
       },
       'totalInputTokens': totalInputTokens,
       'totalOutputTokens': totalOutputTokens,

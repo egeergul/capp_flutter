@@ -42,6 +42,21 @@ class Message {
     );
   }
 
+  // TODO: make sure that the image is not very very big
+  // use compression if needed
+  final imageStringSplitRange = 240000;
+  List<String> _splitImage(String image) {
+    List<String> parts = [];
+    for (int i = 0; i < image.length; i += imageStringSplitRange) {
+      parts.add(image.substring(
+          i,
+          i + imageStringSplitRange > image.length
+              ? image.length
+              : i + imageStringSplitRange));
+    }
+    return parts;
+  }
+
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       id: json['id'],
@@ -49,18 +64,24 @@ class Message {
       updatedAt: json['updatedAt'],
       type: getMessageStatusFromString(json['type']),
       content: json['content'],
-      image: json['image'],
+      image: json["image"] == null
+          ? null
+          : (json['image'] as List<dynamic>).join(),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool withoutImage = false}) {
     return {
       'id': id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'type': type.name,
       'content': content,
-      'image': image,
+      'image': withoutImage
+          ? null
+          : image != null
+              ? _splitImage(image!)
+              : null,
     };
   }
 

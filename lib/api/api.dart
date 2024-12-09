@@ -81,7 +81,13 @@ class Api {
       final updatedAt = DateTime.now().millisecondsSinceEpoch;
       chat.updatedAt = updatedAt;
     }
-    await chatsCollection(user.deviceId).doc(chat.id).update(chat.toJson());
+    try {
+      await chatsCollection(user.deviceId).doc(chat.id).update(chat.toJson());
+    } catch (e) {
+      await chatsCollection(user.deviceId)
+          .doc(chat.id)
+          .update(chat.toJson(withoutImage: true));
+    }
     await updateUser(user: user);
   }
 
@@ -107,7 +113,9 @@ class Api {
   }) async {
     chat.messages.add(message);
     chat.status = ChatStatus.waiting;
+
     await updateConversation(user: user, chat: chat);
+
     LoggerHelper.logInfo("Api.sendMessage",
         "Message (${message.id}) added to chat in chat (${chat.id}) in DB");
 
