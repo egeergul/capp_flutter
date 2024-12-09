@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:capp_flutter/api/api.dart';
-import 'package:capp_flutter/screens/home_page.dart';
+import 'package:capp_flutter/helpers/loading_helper.dart';
+import 'package:capp_flutter/models/chat.dart';
+import 'package:capp_flutter/models/message.dart';
+import 'package:capp_flutter/models/user.dart';
 import 'package:capp_flutter/services/navigation_service.dart';
+import 'package:capp_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
@@ -15,46 +18,47 @@ class HomePageController extends GetxController {
     CroppedFile? cropped = await NavigationService.openSelectImageOptionModal();
     if (cropped == null) return;
 
-    Get.dialog(
-      Scaffold(
-        body: Container(
-          width: Get.width,
-          height: Get.height,
-          color: Colors.black.withOpacity(0.2),
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      ),
-    );
+    LoadingHelper.instance.showLoadingAnimation("analyse_image");
 
     File? file = File(cropped.path);
     final bytes = await file.readAsBytes();
     final base64File = base64Encode(bytes);
 
-    String result =
-        await Api.instance.getImageAnalyses(base64Image: base64File);
+    User user = UserService.instance.user;
+    Chat chat = await Api.instance.createChat(deviceId: user.deviceId);
+    Message message = Message.fromValues(
+      type: MessageType.user,
+      content: "Analyse this image",
+      image: base64File,
+    );
 
-    Get.back();
+    chat = await Api.instance.sendMessage(
+      user: user,
+      chat: chat,
+      message: message,
+    );
+
+    LoadingHelper.instance.closeLoadingAnimation("analyse_image");
     Get.dialog(
       Scaffold(
         body: Container(
           width: Get.width,
           height: Get.height,
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           color: Colors.white,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: Get.back,
-                  child: const Icon(Icons.close),
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: Text(result),
-                ),
-              ],
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(chat.messages.last.content),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text("OK"),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -62,7 +66,7 @@ class HomePageController extends GetxController {
     );
   }
 
-  void onTapColorPaletteDetector() {
+  void onTapColorPaletteDetector() async {
     // Add your code here
   }
 
