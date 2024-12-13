@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:capp_flutter/api/api_constants.dart';
+import 'package:capp_flutter/helpers/extensions.dart';
 import 'package:capp_flutter/models/chat.dart';
 import 'package:capp_flutter/models/message.dart';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,7 +49,7 @@ class OpenaiApi {
         res.add(userMessage);
       } else if (message.type == MessageType.ai) {
         Map<String, dynamic> aiMessage = {
-          "role": "ai",
+          "role": "assistant",
           "content": [
             {"type": "text", "text": message.content},
           ],
@@ -69,7 +71,7 @@ class OpenaiApi {
       'Authorization': 'Bearer ${dotenv.env['OPEN_AI_KEY'] ?? ""}',
     };
 
-    var aga = jsonEncode(
+    var body = jsonEncode(
       {
         "model": model,
         "messages": [
@@ -82,7 +84,7 @@ class OpenaiApi {
     var response = await http.post(
       Uri.parse(ApiConstants.openAiChatCompletions),
       headers: header,
-      body: aga,
+      body: body,
     );
 
     return jsonDecode(response.body);

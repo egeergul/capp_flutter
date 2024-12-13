@@ -35,6 +35,7 @@ class ChatService extends GetxController {
   Future<void> sendMessage({
     required Message message,
   }) async {
+    print("Sending message: ${message}");
     Future<Chat> futureChat = Api.instance.sendMessage(
       user: userService.user,
       chat: chat.value,
