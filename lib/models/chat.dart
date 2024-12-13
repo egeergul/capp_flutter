@@ -29,6 +29,7 @@ ChatType getChatTypeFromString(String? str) => ChatType.values.firstWhere(
 
 class Chat {
   String id;
+  String deviceId;
   int createdAt;
   int updatedAt;
   List<Message> messages;
@@ -39,6 +40,7 @@ class Chat {
 
   Chat({
     required this.id,
+    required this.deviceId,
     required this.createdAt,
     required this.updatedAt,
     required this.messages,
@@ -49,11 +51,12 @@ class Chat {
   });
 
   factory Chat.empty() {
-    return Chat.fromValues(id: "-1");
+    return Chat.fromValues(id: "-1", deviceId: "-1");
   }
 
   factory Chat.fromValues({
     required String id,
+    required String deviceId,
     List<Message>? messages,
     int? createdAt,
     int? updatedAt,
@@ -65,6 +68,7 @@ class Chat {
     final int now = DateTime.now().millisecondsSinceEpoch;
     return Chat(
       id: id,
+      deviceId: deviceId,
       createdAt: createdAt ?? now,
       updatedAt: updatedAt ?? createdAt ?? now,
       messages: messages ?? [],
@@ -78,6 +82,7 @@ class Chat {
   factory Chat.fromJson(Map<String, dynamic> json) {
     return Chat(
       id: json['id'],
+      deviceId: json['deviceId'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
       messages: (json['messages'] as Map<String, dynamic>)
@@ -95,6 +100,7 @@ class Chat {
   Map<String, dynamic> toJson({bool withoutImage = false}) {
     return {
       'id': id,
+      'deviceId': deviceId,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'messages': {
@@ -110,6 +116,6 @@ class Chat {
 
   @override
   String toString() {
-    return 'Chat{id: $id, createdAt: $createdAt, updatedAt: $updatedAt, messages: $messages, totalInputTokens: $totalInputTokens, totalOutputTokens: $totalOutputTokens, status: ${status.name}, type: ${type.name}}';
+    return 'Chat{id: $id, deviceId: $deviceId, createdAt: $createdAt, updatedAt: $updatedAt, messages: $messages, totalInputTokens: $totalInputTokens, totalOutputTokens: $totalOutputTokens, status: ${status.name}, type: ${type.name}}';
   }
 }

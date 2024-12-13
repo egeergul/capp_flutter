@@ -1,22 +1,31 @@
 import 'package:capp_flutter/api/api.dart';
 import 'package:capp_flutter/models/models.dart';
 
+final UserService userService = UserService.instance;
+const int maxChats = 35;
+
 class UserService {
   static UserService instance = UserService();
 
   late final User _user;
 
+  // Getters
+  User get user => _user;
+  String get deviceId => user.deviceId;
+  bool get canCreateChat => user.totalChats < maxChats;
+
+  // Setters
   void setUser(User user) {
     _user = user;
   }
 
-  get user => _user;
+  Future<void> incrementTotalChats() async {
+    user.totalChats++;
+    await Api.instance.updateUser(user: user);
+  }
 
-  Future<void> createImageAnalyserChat() async {
-    // Add your code here
-    // TODO: check if user is able to create a new conversation
-
-    // Create a new chat
-    Chat chat = await Api.instance.createChat(deviceId: user.deviceId);
+  Future<void> decrementTotalChats() async {
+    user.totalChats--;
+    await Api.instance.updateUser(user: user);
   }
 }

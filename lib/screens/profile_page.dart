@@ -1,4 +1,4 @@
-import 'package:capp_flutter/controllers/profile_page_controllers.dart';
+import 'package:capp_flutter/controllers/profile_page_controller.dart';
 import 'package:capp_flutter/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:capp_flutter/utils/base_imports.dart';
@@ -110,7 +110,7 @@ class _HistoryItem extends StatelessWidget {
 }
 
 class _HistoryEmptyBox extends StatelessWidget {
-  const _HistoryEmptyBox({super.key});
+  const _HistoryEmptyBox();
 
   @override
   Widget build(BuildContext context) {

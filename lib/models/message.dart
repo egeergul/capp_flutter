@@ -1,4 +1,4 @@
-enum MessageType { user, app, ai, nil }
+enum MessageType { user, ai, appTyping, nil }
 
 MessageType getMessageStatusFromString(String? str) =>
     MessageType.values.firstWhere(

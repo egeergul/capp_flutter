@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:capp_flutter/controllers/controllers.dart';
+import 'package:capp_flutter/models/chat.dart';
 import 'package:capp_flutter/models/message.dart';
 import 'package:capp_flutter/services/navigation_service.dart';
 import 'package:capp_flutter/utils/base_imports.dart';
 import 'package:capp_flutter/widgets/widgets.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -26,8 +24,18 @@ class ChatScreen extends StatelessWidget {
           Expanded(
             child: Obx(
               () => ListView.builder(
-                itemCount: controller.chat.value.messages.length,
+                itemCount: controller.chat.value.messages.length + 1,
                 itemBuilder: (context, index) {
+                  // The last item is reserved for typing messae
+                  if (index == controller.chat.value.messages.length) {
+                    if (controller.chat.value.status == ChatStatus.waiting ||
+                        controller.chat.value.status == ChatStatus.processing) {
+                      return const TypingMessageBox()
+                          .paddingSymmetric(vertical: 20.h);
+                    }
+                    return const EmptyWidget();
+                  }
+
                   Message message = controller.chat.value.messages[index];
 
                   return MessageBox(message: message);
@@ -53,6 +61,8 @@ class MessageBox extends StatelessWidget {
       return UserMessageBox(message: message);
     } else if (message.type == MessageType.ai) {
       return AppMessageBox(message: message);
+    } else if (message.type == MessageType.appTyping) {
+      return const TypingMessageBox();
     }
     return const EmptyWidget();
   }
@@ -156,6 +166,38 @@ class UserMessageBox extends MessageBox {
             ],
           ),
         ),
+      ],
+    );
+  }
+}
+
+class TypingMessageBox extends StatelessWidget {
+  const TypingMessageBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    return Row(
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: Get.width * 0.85,
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(8.r),
+              bottomLeft: Radius.circular(8.r),
+              bottomRight: Radius.circular(8.r),
+            ),
+            color: theme.colorScheme.tertiary,
+          ),
+          child: Text(
+            "...",
+            style: theme.textTheme.bodyLarge!.copyWith(color: Colors.white),
+          ),
+        ),
+        const Spacer(),
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:capp_flutter/api/api.dart';
 import 'package:capp_flutter/models/models.dart';
+import 'package:capp_flutter/services/history_service.dart';
 import 'package:capp_flutter/services/navigation_service.dart';
 import 'package:capp_flutter/services/user_service.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -16,7 +17,8 @@ class SplashScreenController extends GetxController {
         Future.delayed(const Duration(milliseconds: 1500));
 
     User user = await Api.instance.getUser(deviceId: (await _getId())!);
-    UserService.instance.setUser(user);
+    userService.setUser(user);
+    await historyService.fetchChats();
 
     await minSplashDuration;
     NavigationService.navigateHome();

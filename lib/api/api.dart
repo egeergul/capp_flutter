@@ -9,9 +9,7 @@ class Api {
   static Api instance = Api();
 
   final CollectionReference userCollection = db.collection("users");
-
-  CollectionReference chatsCollection(String deviceId) =>
-      userCollection.doc(deviceId).collection("chats");
+  final CollectionReference chatsCollection = db.collection("chats");
 
   // Creates a new user in the database if it doesn't exist
   // Returns the user
@@ -36,12 +34,8 @@ class Api {
   // if useGivenUpdatedAt is false, the updatedAt field will be set to the current time
   Future<void> updateUser({
     required User user,
-    bool useGivenUpdatedAt = false,
   }) async {
-    if (!useGivenUpdatedAt) {
-      final updatedAt = DateTime.now().millisecondsSinceEpoch;
-      user.updatedAt = updatedAt;
-    }
+    user.updatedAt = DateTime.now().millisecondsSinceEpoch;
     await userCollection.doc(user.deviceId).update(user.toJson());
   }
 
@@ -53,10 +47,11 @@ class Api {
   }) async {
     User user = await getUser(deviceId: deviceId);
 
-    final DocumentReference chatDoc = chatsCollection(deviceId).doc();
+    final DocumentReference chatDoc = chatsCollection.doc();
 
     Chat chat = Chat.fromValues(
       id: chatDoc.id,
+      deviceId: deviceId,
     );
 
     await chatDoc.set(chat.toJson());
@@ -72,31 +67,22 @@ class Api {
 
   // Updates the chat in the database with the given chat
   // if useGivenUpdatedAt is false, the updatedAt field will be set to the current time
-  Future<void> updateConversation({
-    required User user,
+  Future<void> updateChat({
     required Chat chat,
-    bool useGivenUpdatedAt = false,
   }) async {
-    if (!useGivenUpdatedAt) {
-      final updatedAt = DateTime.now().millisecondsSinceEpoch;
-      chat.updatedAt = updatedAt;
-    }
     try {
-      await chatsCollection(user.deviceId).doc(chat.id).update(chat.toJson());
+      await chatsCollection.doc(chat.id).update(chat.toJson());
     } catch (e) {
-      await chatsCollection(user.deviceId)
+      await chatsCollection
           .doc(chat.id)
           .update(chat.toJson(withoutImage: true));
     }
-    await updateUser(user: user);
   }
 
   Future<Chat?> getChat({
-    required String deviceId,
     required String id,
   }) async {
-    final DocumentSnapshot chatDoc =
-        await chatsCollection(deviceId).doc(id).get();
+    final DocumentSnapshot chatDoc = await chatsCollection.doc(id).get();
     if (chatDoc.exists) {
       LoggerHelper.logInfo("Api.getChat", "Chat ($id) found");
       return Chat.fromJson(chatDoc.data()! as Map<String, dynamic>);
@@ -114,7 +100,7 @@ class Api {
     chat.messages.add(message);
     chat.status = ChatStatus.waiting;
 
-    await updateConversation(user: user, chat: chat);
+    await updateChat(chat: chat);
 
     LoggerHelper.logInfo("Api.sendMessage",
         "Message (${message.id}) added to chat in chat (${chat.id}) in DB");
@@ -149,7 +135,7 @@ class Api {
       chat.status = ChatStatus.failed;
     }
 
-    await updateConversation(user: user, chat: chat);
+    await updateChat(chat: chat);
 
     return chat;
   }
@@ -157,14 +143,27 @@ class Api {
   Future<List<Chat>> getUserChats({required String deviceId}) async {
     List<Chat> res = [];
 
-    QuerySnapshot snapshot = await chatsCollection(deviceId).get();
-
-    if (snapshot.docs.isNotEmpty) {
-      res = snapshot.docs
-          .map((i) => Chat.fromJson(i.data() as Map<String, dynamic>))
-          .toList();
+    print("EGE 1");
+    try {
+      var query = await chatsCollection
+          .where("deviceId", isEqualTo: deviceId)
+          .where("status", isNotEqualTo: ChatStatus.deleted.name)
+          .orderBy("updatedAt", descending: true)
+          .get();
+      for (QueryDocumentSnapshot doc in query.docs) {
+        try {
+          res.add(
+            Chat.fromJson(doc.data() as Map<String, dynamic>),
+          );
+        } catch (e) {
+          LoggerHelper.logError("Api.getUserChats.forLoop", e.toString());
+        }
+      }
+    } catch (e) {
+      LoggerHelper.logError("Api.getUserChats", e.toString());
     }
-    res = res.where((e) => e.status != ChatStatus.deleted).toList();
+
+    print("EGE res ${res.length}");
     return res;
   }
 }
