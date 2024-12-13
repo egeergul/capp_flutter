@@ -1,11 +1,18 @@
 import 'package:capp_flutter/models/models.dart';
 import 'package:capp_flutter/services/chat_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatScreenController extends GetxController {
   late String chatId;
   late ChatService chatService;
   final Rx<Chat> chat = Chat.empty().obs;
+
+  // Text Field Params
+  final FocusNode focusNode = FocusNode();
+  final RxBool hasFocus = false.obs;
+  final RxString typedText = "".obs;
+  final TextEditingController textController = TextEditingController();
 
   @override
   void onInit() async {
@@ -29,10 +36,14 @@ class ChatScreenController extends GetxController {
 
     chat.value = chatService.chat.value;
     chatService.chat.listen((Chat inChat) {
+      print("AGA inChat ${inChat.status}");
       chat.value = inChat;
+      chat.refresh();
     });
 
     print('ChatScreenController Created');
+
+    focusNode.addListener(_listenFocusNode);
 
     super.onInit();
   }
@@ -40,6 +51,21 @@ class ChatScreenController extends GetxController {
   @override
   void onClose() {
     print('ChatScreenController Closed');
+    focusNode.removeListener(_listenFocusNode);
+
     super.onClose();
+  }
+
+  void _listenFocusNode() {
+    hasFocus.value = focusNode.hasFocus;
+  }
+
+  // onTaps
+  void onTapSendButton() async {
+    Message message =
+        Message.fromValues(type: MessageType.user, content: typedText.value);
+    chatService.sendMessage(message: message);
+    textController.clear();
+    typedText.value = "";
   }
 }

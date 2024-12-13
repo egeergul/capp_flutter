@@ -35,14 +35,15 @@ class ChatService extends GetxController {
   Future<void> sendMessage({
     required Message message,
   }) async {
-    Future<Chat> futureMessage = Api.instance.sendMessage(
+    Future<Chat> futureChat = Api.instance.sendMessage(
       user: userService.user,
       chat: chat.value,
       message: message,
     );
 
     // Wait for the message to be responden by BE
-    chat.value = await futureMessage;
+    chat.value = await futureChat;
+    chat.refresh();
 
     // Update the chat in the chat history
     historyService.updateChat(chat.value);
