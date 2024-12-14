@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:capp_flutter/api/api_constants.dart';
-import 'package:capp_flutter/helpers/extensions.dart';
+import 'package:capp_flutter/utils/extensions.dart';
 import 'package:capp_flutter/models/chat.dart';
 import 'package:capp_flutter/models/message.dart';
 

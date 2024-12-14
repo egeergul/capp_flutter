@@ -36,14 +36,25 @@ class ChatService extends GetxController {
     required Message message,
   }) async {
     print("Sending message: ${message}");
-    Future<Chat> futureChat = Api.instance.sendMessage(
-      user: userService.user,
-      chat: chat.value,
-      message: message,
+    chat.value.messages.add(message);
+    chat.value.status = ChatStatus.waiting;
+    chat.value.updatedAt = DateTime.now().millisecondsSinceEpoch;
+    chat.refresh();
+
+    Future<Message> futureMessage = Api.instance.sendMessage(
+      chatJson: chat.value.toJson(),
+      messageJson: message.toJson(),
     );
 
+    Message inMessage = await futureMessage;
+    print("Received message: ${inMessage}");
+
     // Wait for the message to be responden by BE
-    chat.value = await futureChat;
+
+    // TODO aslında burada conversation en güncel halini çekebiliriz direkt
+    chat.value.messages.add(inMessage);
+    chat.value.status = ChatStatus.completed;
+    chat.value.updatedAt = DateTime.now().millisecondsSinceEpoch;
     chat.refresh();
 
     // Update the chat in the chat history

@@ -92,11 +92,12 @@ class Api {
     }
   }
 
-  Future<Chat> sendMessage({
-    required User user,
-    required Chat chat,
-    required Message message,
+  Future<Message> sendMessage({
+    required Map<String, dynamic> chatJson,
+    required Map<String, dynamic> messageJson,
   }) async {
+    Chat chat = Chat.fromJson(chatJson);
+    Message message = Message.fromJson(messageJson);
     chat.messages.add(message);
     chat.status = ChatStatus.waiting;
 
@@ -121,23 +122,24 @@ class Api {
     chat.totalInputTokens += usedInputTokens;
     chat.totalOutputTokens += usedOutputTokens;
 
+    Message aiMessage;
     if (r.containsKey("choices")) {
-      chat.messages.add(Message.fromValues(
+      aiMessage = Message.fromValues(
         type: MessageType.ai,
-        content: r["choices"][0]["message"]["content"],
-      ));
+        content: r["choices"][0]["message"]?["content"],
+      );
+      chat.messages.add(aiMessage);
       chat.status = ChatStatus.completed;
     } else {
-      chat.messages.add(Message.fromValues(
-        type: MessageType.ai,
-        content: "Sorry, I couldn't understand that",
-      )); // TODO: add more error messages
+      aiMessage = Message.fromValues(
+          type: MessageType.ai, content: "Sorry, I couldn't understand that");
+      chat.messages.add(aiMessage); // TODO: add more error messages
       chat.status = ChatStatus.failed;
     }
 
     await updateChat(chat: chat);
 
-    return chat;
+    return aiMessage;
   }
 
   Future<List<Chat>> getUserChats({required String deviceId}) async {

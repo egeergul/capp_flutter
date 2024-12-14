@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:capp_flutter/constants/app_lotties.dart';
 import 'package:capp_flutter/controllers/controllers.dart';
 import 'package:capp_flutter/models/chat.dart';
 import 'package:capp_flutter/models/message.dart';
@@ -8,6 +9,7 @@ import 'package:capp_flutter/utils/base_imports.dart';
 import 'package:capp_flutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -17,7 +19,11 @@ class ChatScreen extends StatelessWidget {
     ChatScreenController controller = Get.put(ChatScreenController());
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Screen'),
+        title: GestureDetector(
+            onTap: () {
+              print(controller.chatService.chat.value.messages.length);
+            },
+            child: Text('Chat Screen')),
       ),
       body: Column(
         children: [
@@ -32,7 +38,7 @@ class ChatScreen extends StatelessWidget {
                     if (controller.chat.value.status == ChatStatus.waiting ||
                         controller.chat.value.status == ChatStatus.processing) {
                       return const TypingMessageBox()
-                          .paddingSymmetric(vertical: 20.h);
+                          .marginSymmetric(horizontal: 20.w);
                     }
                     return const EmptyWidget();
                   }
@@ -308,10 +314,7 @@ class TypingMessageBox extends StatelessWidget {
             ),
             color: theme.colorScheme.tertiary,
           ),
-          child: Text(
-            "...",
-            style: theme.textTheme.bodyLarge!.copyWith(color: Colors.white),
-          ),
+          child: Lottie.asset(AppLotties.typingDots, height: 20.h),
         ),
         const Spacer(),
       ],

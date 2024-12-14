@@ -114,6 +114,30 @@ class Chat {
     };
   }
 
+  Chat copyWith({
+    String? id,
+    String? deviceId,
+    int? createdAt,
+    int? updatedAt,
+    List<Message>? messages,
+    int? totalInputTokens,
+    int? totalOutputTokens,
+    ChatStatus? status,
+    ChatType? type,
+  }) {
+    return Chat(
+      id: id ?? this.id,
+      deviceId: deviceId ?? this.deviceId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      messages: messages ?? this.messages,
+      totalInputTokens: totalInputTokens ?? this.totalInputTokens,
+      totalOutputTokens: totalOutputTokens ?? this.totalOutputTokens,
+      status: status ?? this.status,
+      type: type ?? this.type,
+    );
+  }
+
   @override
   String toString() {
     return 'Chat{id: $id, deviceId: $deviceId, createdAt: $createdAt, updatedAt: $updatedAt, messages: $messages, totalInputTokens: $totalInputTokens, totalOutputTokens: $totalOutputTokens, status: ${status.name}, type: ${type.name}}';
