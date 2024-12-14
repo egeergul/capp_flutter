@@ -145,7 +145,6 @@ class Api {
   Future<List<Chat>> getUserChats({required String deviceId}) async {
     List<Chat> res = [];
 
-    print("EGE 1");
     try {
       var query = await chatsCollection
           .where("deviceId", isEqualTo: deviceId)
@@ -165,7 +164,6 @@ class Api {
       LoggerHelper.logError("Api.getUserChats", e.toString());
     }
 
-    print("EGE res ${res.length}");
     return res;
   }
 }

@@ -34,5 +34,6 @@ class SplashScreenController extends GetxController {
     } else if (Platform.isAndroid) {
       return const AndroidId().getId(); // unique ID on Android
     }
+    return null;
   }
 }

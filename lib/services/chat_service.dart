@@ -35,7 +35,6 @@ class ChatService extends GetxController {
   Future<void> sendMessage({
     required Message message,
   }) async {
-    print("Sending message: ${message}");
     chat.value.messages.add(message);
     chat.value.status = ChatStatus.waiting;
     chat.value.updatedAt = DateTime.now().millisecondsSinceEpoch;
@@ -47,7 +46,6 @@ class ChatService extends GetxController {
     );
 
     Message inMessage = await futureMessage;
-    print("Received message: ${inMessage}");
 
     // Wait for the message to be responden by BE
 

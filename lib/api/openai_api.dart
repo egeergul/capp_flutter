@@ -1,10 +1,7 @@
 import 'dart:convert';
-
 import 'package:capp_flutter/api/api_constants.dart';
-import 'package:capp_flutter/utils/extensions.dart';
 import 'package:capp_flutter/models/chat.dart';
 import 'package:capp_flutter/models/message.dart';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 

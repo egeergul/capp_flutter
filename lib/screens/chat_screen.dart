@@ -19,11 +19,7 @@ class ChatScreen extends StatelessWidget {
     ChatScreenController controller = Get.put(ChatScreenController());
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(
-            onTap: () {
-              print(controller.chatService.chat.value.messages.length);
-            },
-            child: Text('Chat Screen')),
+        title: GestureDetector(onTap: () {}, child: const Text('Chat Screen')),
       ),
       body: Column(
         children: [

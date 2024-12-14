@@ -23,8 +23,6 @@ class ChatScreenController extends GetxController {
       return;
     }
 
-    print("EGE $chatId");
-
     if (Get.isRegistered(tag: chatId)) {
       chatService = Get.find<ChatService>(tag: chatId);
     } else {
@@ -36,12 +34,9 @@ class ChatScreenController extends GetxController {
 
     chat.value = chatService.chat.value;
     chatService.chat.listen((Chat inChat) {
-      print("AGA inChat ${inChat.status}");
       chat.value = inChat;
       chat.refresh();
     });
-
-    print('ChatScreenController Created');
 
     focusNode.addListener(_listenFocusNode);
 
@@ -50,7 +45,6 @@ class ChatScreenController extends GetxController {
 
   @override
   void onClose() {
-    print('ChatScreenController Closed');
     focusNode.removeListener(_listenFocusNode);
 
     super.onClose();

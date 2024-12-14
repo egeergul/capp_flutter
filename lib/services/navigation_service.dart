@@ -1,4 +1,5 @@
 import 'package:capp_flutter/constants/routes.dart';
+import 'package:capp_flutter/models/models.dart';
 import 'package:capp_flutter/models/popup.dart';
 import 'package:capp_flutter/widgets/popup_box.dart';
 import 'package:capp_flutter/widgets/widgets.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:capp_flutter/utils/base_imports.dart';
 
 class NavigationService {
   static void closeAllModals() {
@@ -60,5 +62,38 @@ class NavigationService {
     );
 
     return res;
+  }
+
+  // Snackbars
+  static void showTopSnackbar({
+    required SnackbarModel snackbar,
+  }) {
+    GetSnackBar bar = GetSnackBar(
+      snackPosition: snackbar.snackPosition,
+      duration: snackbar.duration,
+      borderRadius: 12.r,
+      borderWidth: 1.5.w,
+      backgroundColor: snackbar.backgroundColor!,
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      titleText: Text(
+        snackbar.title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      messageText: snackbar.message != null
+          ? Text(
+              snackbar.message!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+              ),
+            )
+          : const EmptyWidget(),
+    );
+    Get.showSnackbar(bar);
   }
 }

@@ -1,13 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:capp_flutter/models/chat.dart';
+import 'package:capp_flutter/models/models.dart';
 import 'package:capp_flutter/services/chat_service.dart';
 import 'package:capp_flutter/services/navigation_service.dart';
+import 'package:capp_flutter/services/user_service.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class HomePageController extends GetxController {
   void onTapImageAnalyser() async {
+    if (!userService.canCreateChat) {
+      NavigationService.showTopSnackbar(
+        snackbar: SnackbarModel.maximumChatsReached(),
+      );
+      return;
+    }
     // Add your code here
     CroppedFile? cropped = await NavigationService.openSelectImageOptionModal();
     if (cropped == null) return;
@@ -20,15 +28,11 @@ class HomePageController extends GetxController {
     Chat? chat = await cs.createChat();
 
     if (chat == null) {
-      //TODO bunu navbar taşı
-      Get.showSnackbar(
-        const GetSnackBar(
-          title: "You have reached the maximum number of chats",
-        ),
+      NavigationService.showTopSnackbar(
+        snackbar: SnackbarModel.maximumChatsReached(),
       );
       return;
     }
-
     Get.put(cs, tag: chat.id);
     cs.sendInitialImageAnalyserChatMessage(base64File: base64File);
 
