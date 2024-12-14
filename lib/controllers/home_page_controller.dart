@@ -11,7 +11,7 @@ import 'package:image_cropper/image_cropper.dart';
 class HomePageController extends GetxController {
   void onTapImageAnalyser() async {
     if (!userService.canCreateChat) {
-      NavigationService.showTopSnackbar(
+      NavigationService.showSnackbar(
         snackbar: SnackbarModel.maximumChatsReached(),
       );
       return;
@@ -28,16 +28,16 @@ class HomePageController extends GetxController {
     Chat? chat = await cs.createChat();
 
     if (chat == null) {
-      NavigationService.showTopSnackbar(
+      NavigationService.showSnackbar(
         snackbar: SnackbarModel.maximumChatsReached(),
       );
       return;
     }
-    Get.put(cs, tag: chat.id);
+    //Get.put(cs, tag: chat.id); TODO kontrol et
     cs.sendInitialImageAnalyserChatMessage(base64File: base64File);
 
     // Navigate to the chat screen
-    NavigationService.navigateToChatScreen(chatId: chat.id);
+    NavigationService.navigateToChatScreen(chatService: cs);
   }
 
   void onTapColorPaletteDetector() async {

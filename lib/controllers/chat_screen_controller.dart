@@ -1,10 +1,10 @@
 import 'package:capp_flutter/models/models.dart';
 import 'package:capp_flutter/services/chat_service.dart';
+import 'package:capp_flutter/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatScreenController extends GetxController {
-  late String chatId;
   late ChatService chatService;
   final Rx<Chat> chat = Chat.empty().obs;
 
@@ -16,21 +16,16 @@ class ChatScreenController extends GetxController {
 
   @override
   void onInit() async {
-    chatId = Get.arguments['chatId'] ?? "not_found";
-    if (chatId == "not_found") {
-      //TODO:   Handle chat not found
-      Get.back();
-      return;
-    }
-
-    if (Get.isRegistered(tag: chatId)) {
-      chatService = Get.find<ChatService>(tag: chatId);
-    } else {
+    if (Get.arguments['chatService'] != null) {
+      chatService = Get.arguments['chatService'];
+    } else if (Get.arguments['chat'] != null) {
       chatService = ChatService();
-      await chatService.initChat(chatId: chatId);
-      Get.put(chatService, tag: chatId);
+      chatService.initChat(Get.arguments['chat']);
+    } else {
+      // TODO NavigationService.showSnackbar(
+      //     snackbar: SnackbarModel.somethingWentWrong());
+      return Get.back();
     }
-    //TODO: Handle chat service not found
 
     chat.value = chatService.chat.value;
     chatService.chat.listen((Chat inChat) {

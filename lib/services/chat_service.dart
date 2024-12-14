@@ -8,14 +8,8 @@ import 'package:get/get.dart';
 class ChatService extends GetxController {
   late Rx<Chat> chat;
 
-  Future<Chat?> initChat({
-    required String chatId,
-  }) async {
-    chat = Chat.empty().obs;
-    Chat? c = await Api.instance.getChat(id: chatId);
-    if (c == null) return null;
-    chat.value = c;
-    return c;
+  void initChat(Chat c) {
+    chat = c.obs;
   }
 
   Future<Chat?> createChat() async {

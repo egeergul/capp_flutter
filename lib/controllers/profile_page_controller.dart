@@ -16,7 +16,7 @@ class ProfilePageController extends GetxController {
   }
 
   void onTap(Chat chat) {
-    NavigationService.navigateToChatScreen(chatId: chat.id);
+    NavigationService.navigateToChatScreen(chat: chat);
   }
 
   void onTapDelete(Chat chat) async {

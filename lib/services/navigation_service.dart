@@ -1,6 +1,7 @@
 import 'package:capp_flutter/constants/routes.dart';
 import 'package:capp_flutter/models/models.dart';
 import 'package:capp_flutter/models/popup.dart';
+import 'package:capp_flutter/services/chat_service.dart';
 import 'package:capp_flutter/widgets/popup_box.dart';
 import 'package:capp_flutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,10 @@ class NavigationService {
     Get.offAllNamed(Routes.home);
   }
 
-  static navigateToChatScreen({required String chatId}) {
+  static navigateToChatScreen({ChatService? chatService, Chat? chat}) {
     Get.toNamed(Routes.chat, arguments: {
-      "chatId": chatId,
+      "chatService": chatService,
+      "chat": chat,
     });
   }
 
@@ -65,7 +67,7 @@ class NavigationService {
   }
 
   // Snackbars
-  static void showTopSnackbar({
+  static void showSnackbar({
     required SnackbarModel snackbar,
   }) {
     GetSnackBar bar = GetSnackBar(
@@ -73,7 +75,7 @@ class NavigationService {
       duration: snackbar.duration,
       borderRadius: 12.r,
       borderWidth: 1.5.w,
-      backgroundColor: snackbar.backgroundColor!,
+      backgroundColor: snackbar.backgroundColor,
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       titleText: Text(
         snackbar.title,

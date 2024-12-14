@@ -25,4 +25,13 @@ class SnackbarModel {
       snackPosition: SnackPosition.TOP,
     );
   }
+
+  factory SnackbarModel.somethingWentWrong() {
+    return SnackbarModel(
+      title: "Something went wrong!",
+      duration: const Duration(seconds: 3),
+      backgroundColor: Colors.redAccent,
+      snackPosition: SnackPosition.TOP,
+    );
+  }
 }
