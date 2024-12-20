@@ -34,6 +34,8 @@ class ChatService extends GetxController {
     chat.value.updatedAt = DateTime.now().millisecondsSinceEpoch;
     chat.refresh();
 
+    historyService.updateChat(chat.value);
+
     Future<Message> futureMessage = Api.instance.sendMessage(
       chatJson: chat.value.toJson(),
       messageJson: message.toJson(),
@@ -49,7 +51,6 @@ class ChatService extends GetxController {
     chat.value.updatedAt = DateTime.now().millisecondsSinceEpoch;
     chat.refresh();
 
-    // Update the chat in the chat history
     historyService.updateChat(chat.value);
   }
 

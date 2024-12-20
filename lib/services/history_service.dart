@@ -20,11 +20,16 @@ class HistoryService extends GetxController {
     chats.add(chat);
   }
 
+  void sortChats() {
+    chats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+  }
+
   void updateChat(Chat chat) {
     final index = chats.indexWhere((element) => element.id == chat.id);
     if (index != -1) {
       chats[index] = chat;
     }
+    sortChats();
   }
 
   void deleteChat(Chat chat) {
