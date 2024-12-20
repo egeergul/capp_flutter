@@ -5,11 +5,14 @@ import 'package:capp_flutter/controllers/controllers.dart';
 import 'package:capp_flutter/models/chat.dart';
 import 'package:capp_flutter/models/message.dart';
 import 'package:capp_flutter/services/navigation_service.dart';
+import 'package:capp_flutter/themes/markdown_styles.dart';
 import 'package:capp_flutter/utils/base_imports.dart';
 import 'package:capp_flutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:markdown/markdown.dart' as md;
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -219,8 +222,8 @@ class AppMessageBox extends MessageBox {
             ),
             color: theme.colorScheme.tertiary,
           ),
-          child: Text(
-            message.content,
+          child: MarkdownText(
+            text: message.content,
             style: theme.textTheme.bodyLarge!.copyWith(color: Colors.white),
           ),
         ),
@@ -277,14 +280,45 @@ class UserMessageBox extends MessageBox {
                   ),
                 ),
               ],
-              Text(
-                message.content,
+              MarkdownText(
+                text: message.content,
                 style: theme.textTheme.bodyLarge!.copyWith(color: Colors.black),
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class MarkdownText extends StatelessWidget {
+  final String text;
+  final TextStyle style;
+
+  const MarkdownText({
+    super.key,
+    required this.text,
+    required this.style,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return MarkdownBody(
+          selectable: false,
+          data: text,
+          styleSheet: MarkdownStyles.getMarkdownStyleFrom(style),
+          extensionSet: md.ExtensionSet(
+            md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+            <md.InlineSyntax>[
+              md.EmojiSyntax(),
+              ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+            ],
+          ),
+        );
+      },
     );
   }
 }

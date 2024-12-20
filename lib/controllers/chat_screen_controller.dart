@@ -1,6 +1,5 @@
 import 'package:capp_flutter/models/models.dart';
 import 'package:capp_flutter/services/chat_service.dart';
-import 'package:capp_flutter/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

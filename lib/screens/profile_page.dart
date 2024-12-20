@@ -1,7 +1,9 @@
 import 'package:capp_flutter/controllers/profile_page_controller.dart';
 import 'package:capp_flutter/models/models.dart';
+import 'package:capp_flutter/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:capp_flutter/utils/base_imports.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
