@@ -12,12 +12,15 @@ class ChatService extends GetxController {
     chat = c.obs;
   }
 
-  Future<Chat?> createChat() async {
+  Future<Chat?> createChat({required ChatType chatType}) async {
     // Check if the user can create a new chat
     if (!userService.canCreateChat) return null;
 
     // Create a new chat
-    Chat c = await Api.instance.createChat(deviceId: userService.deviceId);
+    Chat c = await Api.instance.createChat(
+      deviceId: userService.deviceId,
+      chatType: chatType,
+    );
     chat = c.obs;
 
     await userService.incrementTotalChats();
@@ -28,6 +31,7 @@ class ChatService extends GetxController {
 
   Future<void> sendMessage({
     required Message message,
+    bool expectMetadataResponse = false,
   }) async {
     chat.value.messages.add(message);
     chat.value.status = ChatStatus.waiting;
@@ -39,6 +43,7 @@ class ChatService extends GetxController {
     Future<Message> futureMessage = Api.instance.sendMessage(
       chatJson: chat.value.toJson(),
       messageJson: message.toJson(),
+      expectMetadataResponse: expectMetadataResponse,
     );
 
     Message inMessage = await futureMessage;
@@ -65,5 +70,21 @@ class ChatService extends GetxController {
     );
 
     await sendMessage(message: message);
+  }
+
+  Future<void> sendInitialImageColorPaletteDetector({
+    required String base64File,
+  }) async {
+    // Send the initial message to the chat
+    Message message = Message.fromValues(
+      type: MessageType.user,
+      content: "Detect the color palette of this image",
+      image: base64File,
+    );
+
+    await sendMessage(
+      message: message,
+      expectMetadataResponse: true,
+    );
   }
 }

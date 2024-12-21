@@ -1,6 +1,7 @@
 import 'package:capp_flutter/api/openai_api.dart';
 import 'package:capp_flutter/helpers/logger_helper.dart';
 import 'package:capp_flutter/models/models.dart';
+import 'package:capp_flutter/utils/parse_json_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -44,6 +45,7 @@ class Api {
   // Returns the empty chat
   Future<Chat> createChat({
     required String deviceId,
+    required ChatType chatType,
   }) async {
     User user = await getUser(deviceId: deviceId);
 
@@ -52,6 +54,7 @@ class Api {
     Chat chat = Chat.fromValues(
       id: chatDoc.id,
       deviceId: deviceId,
+      type: chatType,
     );
 
     await chatDoc.set(chat.toJson());
@@ -95,6 +98,7 @@ class Api {
   Future<Message> sendMessage({
     required Map<String, dynamic> chatJson,
     required Map<String, dynamic> messageJson,
+    bool expectMetadataResponse = false,
   }) async {
     Chat chat = Chat.fromJson(chatJson);
     Message message = Message.fromJson(messageJson);
@@ -124,9 +128,25 @@ class Api {
 
     Message aiMessage;
     if (r.containsKey("choices")) {
+      String responseContent = r["choices"][0]["message"]?["content"];
+
+      String content = "";
+      Map<String, dynamic>? metaData;
+
+      if (expectMetadataResponse) {
+        try {
+          metaData = parseJsonString(responseContent);
+        } catch (e) {
+          content = responseContent;
+        }
+      } else {
+        content = responseContent;
+      }
+
       aiMessage = Message.fromValues(
         type: MessageType.ai,
-        content: r["choices"][0]["message"]?["content"],
+        content: content,
+        metaData: metaData,
       );
       chat.messages.add(aiMessage);
       chat.status = ChatStatus.completed;

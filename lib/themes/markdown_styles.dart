@@ -8,7 +8,10 @@ class MarkdownStyles {
     return MarkdownStyleSheet(
       a: style,
       p: style,
-      code: style,
+      code: style.copyWith(color: Colors.orange),
+      codeblockDecoration: const BoxDecoration(
+        color: Colors.black,
+      ),
       h1: style.copyWith(
         fontSize: fs * 2.5,
       ),

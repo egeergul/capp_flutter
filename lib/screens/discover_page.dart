@@ -5,10 +5,8 @@ class DiscoverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        child: const Text('Discover Page'),
-      ),
+    return const Center(
+      child: Text("Discover Screen"),
     );
   }
 }

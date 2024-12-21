@@ -13,6 +13,7 @@ class Message {
   MessageType type;
   String content;
   String? image;
+  Map<String, dynamic>? metaData;
 
   Message({
     required this.id,
@@ -21,6 +22,7 @@ class Message {
     required this.type,
     required this.content,
     this.image,
+    this.metaData,
   });
 
   factory Message.fromValues({
@@ -30,6 +32,7 @@ class Message {
     int? createdAt,
     int? updatedAt,
     String? image,
+    Map<String, dynamic>? metaData,
   }) {
     final int now = DateTime.now().millisecondsSinceEpoch;
     return Message(
@@ -39,6 +42,7 @@ class Message {
       type: type,
       content: content,
       image: image,
+      metaData: metaData,
     );
   }
 
@@ -67,6 +71,9 @@ class Message {
       image: json["image"] == null
           ? null
           : (json['image'] as List<dynamic>).join(),
+      metaData: json["metaData"] == null
+          ? null
+          : (json['metaData'] as Map<String, dynamic>),
     );
   }
 
@@ -82,11 +89,12 @@ class Message {
           : image != null
               ? _splitImage(image!)
               : null,
+      'metaData': metaData,
     };
   }
 
   @override
   String toString() {
-    return 'Message{id: $id, createdAt: $createdAt, updatedAt: $updatedAt, type: ${type.name}, content: $content, image: ${image != null ? 'yes' : 'no'}}';
+    return 'Message{id: $id, createdAt: $createdAt, updatedAt: $updatedAt, type: ${type.name}, content: $content, image: ${image != null ? 'yes' : 'no'}, metaData: $metaData}';
   }
 }

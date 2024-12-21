@@ -12,6 +12,8 @@ class OpenaiApi {
     switch (type) {
       case ChatType.imageAnalyser:
         return ApiConstants.analyzeImageSystemMessageV1;
+      case ChatType.colorPaletteDetector:
+        return ApiConstants.detectColorPaletteSystemMessageV1;
       default:
         return null;
     }

@@ -52,7 +52,15 @@ class ChatScreenController extends GetxController {
   void onTapSendButton() async {
     Message message =
         Message.fromValues(type: MessageType.user, content: typedText.value);
-    chatService.sendMessage(message: message);
+
+    bool interpretJsonStringMessages = false;
+    if (chat.value.type == ChatType.colorPaletteDetector) {
+      interpretJsonStringMessages = true;
+    }
+    chatService.sendMessage(
+      message: message,
+      expectMetadataResponse: interpretJsonStringMessages,
+    );
     textController.clear();
     typedText.value = "";
   }

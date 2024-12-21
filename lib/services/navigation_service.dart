@@ -73,10 +73,12 @@ class NavigationService {
     GetSnackBar bar = GetSnackBar(
       snackPosition: snackbar.snackPosition,
       duration: snackbar.duration,
-      borderRadius: 12.r,
+      animationDuration:
+          snackbar.animationDuration ?? const Duration(seconds: 1),
+      borderRadius: snackbar.borderRadius ?? 12.r,
       borderWidth: 1.5.w,
       backgroundColor: snackbar.backgroundColor,
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      margin: snackbar.margin ?? EdgeInsets.symmetric(horizontal: 20.w),
       titleText: Text(
         snackbar.title,
         style: const TextStyle(
