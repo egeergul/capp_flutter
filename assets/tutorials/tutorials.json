@@ -1,0 +1,50 @@
+[
+    {
+        "title": "Introduction to Color Theory",
+        "description": "Learn the fundamentals of color theory, including primary, secondary, and tertiary colors, and how the color wheel helps in understanding color relationships.",
+        "path": "assets/tutorials/tutorial1/tutorial.json",
+        "level": "Beginner"
+    },
+    {
+        "title": "Properties of Color",
+        "description": "Explore the key properties of color, such as hue, saturation, luminance, tints, tones, and shades, and their impact on design and perception.",
+        "path": "/tutorials/properties_of_color.json",
+        "level": "Beginner"
+    },
+    {
+        "title": "Color Harmony",
+        "description": "Understand the principles of color harmony, including complementary, analogous, triadic, and monochromatic schemes, to create balanced and visually appealing designs.",
+        "path": "/tutorials/color_harmony.json",
+        "level": "Intermediate"
+    },
+    {
+        "title": "Emotional Impact of Colors",
+        "description": "Discover how colors influence emotions, moods, and cultural perceptions, and learn how to use color to evoke specific feelings in your designs.",
+        "path": "/tutorials/emotional_impact_of_colors.json",
+        "level": "Intermediate"
+    },
+    {
+        "title": "Designing with Color Palettes",
+        "description": "Learn how to create and use color palettes effectively, including warm, cool, and neutral palettes, and tools for generating the perfect palette.",
+        "path": "/tutorials/designing_with_color_palettes.json",
+        "level": "Intermediate"
+    },
+    {
+        "title": "Color Contrast and Accessibility",
+        "description": "Learn the importance of color contrast for readability and accessibility, including guidelines for contrast ratios and designing for inclusive experiences.",
+        "path": "/tutorials/color_contrast_and_accessibility.json",
+        "level": "Advanced"
+    },
+    {
+        "title": "Color in Digital Media vs. Print",
+        "description": "Understand the differences between RGB and CMYK color models, and get tips for designing for digital screens and print media.",
+        "path": "/tutorials/color_in_digital_vs_print.json",
+        "level": "Advanced"
+    },
+    {
+        "title": "Common Mistakes in Color Usage",
+        "description": "Avoid common pitfalls in color usage, such as overuse of vibrant colors, ignoring color harmony, and neglecting accessibility considerations.",
+        "path": "/tutorials/common_mistakes_in_color_usage.json",
+        "level": "Beginner"
+    }
+]

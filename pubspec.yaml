@@ -41,3 +41,5 @@ flutter:
   assets:
     - assets/.env
     - assets/lotties/
+    - assets/tutorials/
+    - assets/tutorials/tutorial1/

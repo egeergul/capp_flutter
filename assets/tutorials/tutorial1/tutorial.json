@@ -1,0 +1,31 @@
+{
+    "title": "Introduction to Color Theory",
+    "description": "This course introduces the fundamentals of color theory, including the basics of primary, secondary, and tertiary colors, as well as the color wheel and its applications in design.",
+    "level": "beginner",
+    "sections": [
+        {
+            "title": "What is Color Theory?",
+            "content": "Color theory is a framework that designers and artists use to understand how colors interact and how to combine them effectively. It provides guidelines for creating visual harmony and emotional impact through color choices. For example, a warm palette using reds and oranges can evoke energy and passion, while a cool palette using blues and greens conveys calm and tranquility. Color theory also helps in understanding how to use colors effectively in branding, marketing, and storytelling."
+        },
+        {
+            "title": "Primary Colors",
+            "content": "Primary colors are the foundation of all other colors. These include red, blue, and yellow. They cannot be created by mixing other colors and are used to create secondary and tertiary colors. For example, red is often associated with passion and love, blue with stability and trust, and yellow with happiness and energy. These colors are often seen in national flags, branding (e.g., Coca-Cola’s red or IKEA’s yellow and blue), and traditional artwork."
+        },
+        {
+            "title": "Secondary Colors",
+            "content": "Secondary colors are created by mixing two primary colors. For example, mixing red and blue produces purple, blue and yellow produce green, and yellow and red produce orange. Each secondary color has its own symbolism and applications: \n - Purple is associated with royalty and luxury, often used in high-end branding. \n - Green represents nature and growth, commonly used in eco-friendly and health-focused designs. \n - Orange signifies enthusiasm and creativity, making it popular in advertising and sports branding."
+        },
+        {
+            "title": "Tertiary Colors",
+            "content": "Tertiary colors are created by mixing a primary color with a secondary color. Examples include red-orange, yellow-green, and blue-purple. These colors add depth and variety to the color palette, enabling designers to create more nuanced and sophisticated visuals. For instance, \n - Red-orange is often used in autumn-themed designs to evoke warmth and comfort. \n - Yellow-green can be seen in springtime graphics to convey freshness and vitality. \n - Blue-purple (or indigo) is frequently used in futuristic or mystical themes."
+        },
+        {
+            "title": "The Color Wheel",
+            "content": "The color wheel is a circular diagram that organizes colors based on their relationships. It is divided into primary, secondary, and tertiary colors and helps designers understand color harmony and contrast. For example, \n - Complementary colors, such as blue and orange, are opposite each other on the wheel and create vibrant contrast. \n - Analogous colors, like green, yellow-green, and yellow, are next to each other and provide a harmonious look. \n - The triadic scheme, using three evenly spaced colors like red, yellow, and blue, creates a balanced and dynamic palette. The color wheel is an essential tool for creating visually appealing designs in fashion, interior design, and graphic design."
+        },
+        {
+            "title": "Applications of Color Theory",
+            "content": "Color theory is used in various fields such as graphic design, painting, interior design, and marketing. For instance, \n - In graphic design, understanding color theory helps in creating logos and advertisements that resonate with the target audience. For example, McDonald’s uses red and yellow to evoke hunger and happiness. \n - In painting, artists like Van Gogh used contrasting colors (e.g., blue and orange) to create dramatic effects. \n - In interior design, color schemes are used to set the mood of a room, such as soft blues for a calming bedroom or vibrant yellows for an energizing kitchen. \n - In marketing, colors influence consumer behavior, such as green being associated with sustainability or black with luxury. By applying the principles of color theory, professionals can craft impactful and memorable designs."
+        }
+    ]
+}
